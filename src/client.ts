@@ -1,6 +1,13 @@
 import type { Connection } from "@prismatic-io/spectral";
 import GhostAdminAPI from "@tryghost/admin-api";
 
+interface BrowseParams {
+  filter?: string;
+  limit?: number;
+  page?: number;
+  order?: string;
+}
+
 export const createClient = (connection: Connection) => {
   const api = new GhostAdminAPI({
     url: connection.fields.adminDomain,
@@ -8,8 +15,8 @@ export const createClient = (connection: Connection) => {
     key: connection.fields.adminApiKey,
   });
   return {
-    getPosts: () => {
-      return api.posts.browse();
+    getPosts: (params: BrowseParams = {}) => {
+      return api.posts.browse(params);
     },
   };
 };
