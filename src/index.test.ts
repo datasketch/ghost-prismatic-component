@@ -1,4 +1,4 @@
-import { getPosts } from "./actions";
+import { getMembers, getPosts } from "./actions";
 import { ghostConnection } from "./connections";
 import { invoke, createConnection } from "@prismatic-io/spectral/dist/testing";
 
@@ -46,6 +46,46 @@ describe("actions", () => {
 
   test("should return offset posts", async () => {
     const { result } = await invoke(getPosts, {
+      connection,
+      limit: 15,
+      page: 2,
+    });
+    expect(result.data.meta.pagination.page).toBe(2);
+  });
+
+  test("should return list of members", async () => {
+    const { result } = await invoke(getMembers, {
+      connection,
+      limit: 15,
+      page: 1,
+    });
+    expect(Array.isArray(result.data)).toBe(true);
+    expect(result.data.length).toBe(15); // Ghost default page size
+    expect(result.data).toHaveProperty("meta");
+    expect(result.data.meta).toHaveProperty("pagination");
+    expect(Object.keys(result.data.meta.pagination)).toEqual(
+      expect.arrayContaining([
+        "page",
+        "limit",
+        "pages",
+        "total",
+        "next",
+        "prev",
+      ]),
+    );
+  });
+
+  test("should return limited members", async () => {
+    const { result } = await invoke(getMembers, {
+      connection,
+      limit: 10,
+      page: 1,
+    });
+    expect(result.data.length).toBe(10);
+  });
+
+  test("should return offset members", async () => {
+    const { result } = await invoke(getMembers, {
       connection,
       limit: 15,
       page: 2,

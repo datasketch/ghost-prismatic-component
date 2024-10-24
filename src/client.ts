@@ -18,5 +18,8 @@ export const createClient = (connection: Connection) => {
     getPosts: (params: BrowseParams = {}) => {
       return api.posts.browse(params);
     },
+    getMembers: (params: BrowseParams = {}) => {
+      return api.members.browse(params);
+    },
   };
 };

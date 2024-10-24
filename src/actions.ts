@@ -1,31 +1,7 @@
-import { action, input, util } from "@prismatic-io/spectral";
+import { action } from "@prismatic-io/spectral";
 
 import { createClient } from "./client";
-
-const connection = input({
-  label: "Connection",
-  type: "connection",
-  required: true,
-});
-
-const limit = input({
-  label: "Limit",
-  type: "string",
-  default: "15",
-  required: false,
-  clean: (value) => util.types.toNumber(value),
-});
-
-const page = input({
-  label: "Page",
-  type: "string",
-  default: "1",
-  required: false,
-  clean: (value) => util.types.toNumber(value),
-});
-
-// const filter = input({})
-// const order = input({})
+import { connection, limit, page } from "./inputs";
 
 export const getPosts = action({
   display: {
@@ -36,6 +12,24 @@ export const getPosts = action({
     const client = createClient(connection);
     return {
       data: await client.getPosts({ limit, page }),
+    };
+  },
+  inputs: {
+    connection,
+    limit,
+    page,
+  },
+});
+
+export const getMembers = action({
+  display: {
+    label: "Get members",
+    description: "Get lists of members filtered by various criteria.",
+  },
+  perform: async (context, { connection, limit, page }) => {
+    const client = createClient(connection);
+    return {
+      data: await client.getMembers({ limit, page }),
     };
   },
   inputs: {
