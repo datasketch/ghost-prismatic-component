@@ -39,4 +39,4 @@ export const getMembers = action({
   },
 });
 
-export default { getPosts };
+export default { getPosts, getMembers };
