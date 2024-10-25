@@ -44,6 +44,15 @@ describe("actions", () => {
     expect(result.data.length).toBe(10);
   });
 
+  test("should return all posts", async () => {
+    const { result } = await invoke(getPosts, {
+      connection,
+      limit: "all",
+      page: 1,
+    });
+    expect(result.data.length).toBeGreaterThan(15);
+  });
+
   test("should return offset posts", async () => {
     const { result } = await invoke(getPosts, {
       connection,
@@ -82,6 +91,15 @@ describe("actions", () => {
       page: 1,
     });
     expect(result.data.length).toBe(10);
+  });
+
+  test("should return all members", async () => {
+    const { result } = await invoke(getMembers, {
+      connection,
+      limit: "all",
+      page: 1,
+    });
+    expect(result.data.length).toBeGreaterThan(15);
   });
 
   test("should return offset members", async () => {

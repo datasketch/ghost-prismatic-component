@@ -14,7 +14,17 @@ export const limit = input({
   type: "string",
   default: "15",
   required: false,
-  clean: (value) => util.types.toNumber(value),
+  clean: (value: unknown) => {
+    const inputValue = util.types.toString(value).trim();
+    if (/^\+d$/.test(inputValue)) {
+      return util.types.toNumber(value);
+    }
+    if (inputValue.toLowerCase() === "all") {
+      return "all";
+    }
+    throw new Error(`The value "${inputValue}" is not valid for this input`);
+  },
+  comments: "Write `all` to fetch all the data.",
 });
 
 export const page = input({
