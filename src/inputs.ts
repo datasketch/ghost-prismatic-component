@@ -16,7 +16,7 @@ export const limit = input({
   required: false,
   clean: (value: unknown) => {
     const inputValue = util.types.toString(value).trim();
-    if (/^\+d$/.test(inputValue)) {
+    if (/^\d+$/.test(inputValue)) {
       return util.types.toNumber(value);
     }
     if (inputValue.toLowerCase() === "all") {
